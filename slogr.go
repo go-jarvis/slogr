@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"os"
 	"runtime"
 	"strings"
 )
@@ -16,18 +15,34 @@ type SLogger struct {
 	logr *slog.Logger
 }
 
+func Default() *SLogger {
+	log := &SLogger{}
+	log.Initialize()
+
+	return log
+}
+
 type sloggerKeyType int
 
 var sloggerKey = sloggerKeyType(0)
 
+// WithContext returns a new context with the given logger
 func WithContext(ctx context.Context, log *SLogger) context.Context {
 	return context.WithValue(ctx, sloggerKey, log)
 }
 
+// FromContext returns the logger from the given context
+// if none is found, it returns the default logger: json format, info level
 func FromContext(ctx context.Context) *SLogger {
-	return ctx.Value(sloggerKey).(*SLogger)
+	log, ok := ctx.Value(sloggerKey).(*SLogger)
+	if ok {
+		return log
+	}
+
+	return Default()
 }
 
+// SetDefaults sets the default values for the logger
 func (s *SLogger) SetDefaults() {
 	if s.Level == "" {
 		s.Level = "info"
@@ -38,18 +53,11 @@ func (s *SLogger) SetDefaults() {
 	}
 }
 
+// Initialize initializes the logger
 func (s *SLogger) Initialize() {
 	s.SetDefaults()
 
-	opt := &slog.HandlerOptions{
-		Level: Leveler(strings.ToLower(s.Level)).Leveler(),
-	}
-
-	var h *slog.JSONHandler
-	if s.Format == "json" {
-		h = slog.NewJSONHandler(os.Stdout, opt)
-	}
-
+	h := Handler(s.Format, s.Level)
 	s.logr = slog.New(h)
 }
 

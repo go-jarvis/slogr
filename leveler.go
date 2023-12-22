@@ -14,6 +14,7 @@ var (
 	LevelFatal Leveler = "fatal"
 )
 
+// Leveler returns the slog.Level for the given level
 func (l Leveler) String() string {
 	switch l {
 	case LevelDebug:
@@ -28,7 +29,7 @@ func (l Leveler) String() string {
 		// 	return "fatal"
 	}
 
-	return "info"
+	return "unknown"
 }
 
 func (l Leveler) Leveler() slog.Level {
