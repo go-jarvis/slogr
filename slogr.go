@@ -34,6 +34,10 @@ func WithContext(ctx context.Context, log *SLogger) context.Context {
 // FromContext returns the logger from the given context
 // if none is found, it returns the default logger: json format, info level
 func FromContext(ctx context.Context) *SLogger {
+	if ctx == nil {
+		return Default()
+	}
+
 	log, ok := ctx.Value(sloggerKey).(*SLogger)
 	if ok {
 		return log

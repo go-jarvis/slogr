@@ -1,6 +1,7 @@
 package slogr
 
 import (
+	"context"
 	"log/slog"
 	"os"
 	"testing"
@@ -45,3 +46,12 @@ func Output(log *SLogger) {
 // {"time":"2023-12-22T15:44:48.455347+08:00","level":"INFO","msg":"hello world","foo":"bar","in":"output","caller":"/Users/franktang/data/gopath/src/github.com/go-jarvis/slogr/slogr_test.go:31#TestSLogger"}
 // {"time":"2023-12-22T15:44:48.455352+08:00","level":"WARN","msg":"hello world","foo":"bar","in":"output","caller":"/Users/franktang/data/gopath/src/github.com/go-jarvis/slogr/slogr_test.go:31#TestSLogger"}
 // {"time":"2023-12-22T15:44:48.455356+08:00","level":"ERROR","msg":"hello world","foo":"bar","in":"output","caller":"/Users/franktang/data/gopath/src/github.com/go-jarvis/slogr/slogr_test.go:31#TestSLogger"}
+
+func TestSLogger2(t *testing.T) {
+
+	log := FromContext(context.TODO())
+	log.Initialize()
+	log = log.With("foo", "bar")
+
+	Output(log)
+}
