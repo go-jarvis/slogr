@@ -31,4 +31,14 @@ func TestSLogger(t *testing.T) {
 	log.Info("hello world")
 	log.Warn("hello world")
 	log.Error("hello world")
+
+	Output(log)
+}
+
+func Output(log *SLogger) {
+	log = log.With("in", "output")
+	log.Debug("hello world")
+	log.Info("hello world")
+	log.Warn("hello world")
+	log.Error("hello world")
 }

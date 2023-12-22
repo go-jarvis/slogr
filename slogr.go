@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"runtime"
 	"strings"
 )
 
@@ -52,30 +53,47 @@ func (s *SLogger) Initialize() {
 	s.logr = slog.New(h)
 }
 
-func (s *SLogger) log(l slog.Level, format string, args ...interface{}) {
+// output print logs a message with the given level
+func (s *SLogger) output(l slog.Level, format string, args ...interface{}) {
 	msg := fmt.Sprintf(format, args...)
-	s.logr.Log(context.Background(), l, msg)
+
+	caller := caller()
+	s.logr.Log(context.Background(), l, msg, "caller", caller)
 }
 
 func (s *SLogger) Debug(format string, args ...interface{}) {
-	s.log(slog.LevelDebug, format, args...)
+	s.output(slog.LevelDebug, format, args...)
 }
 
 func (s *SLogger) Info(format string, args ...interface{}) {
-	s.log(slog.LevelInfo, format, args...)
+	s.output(slog.LevelInfo, format, args...)
 }
 
 func (s *SLogger) Warn(format string, args ...interface{}) {
-	s.log(slog.LevelWarn, format, args...)
+	s.output(slog.LevelWarn, format, args...)
 }
 
 func (s *SLogger) Error(format string, args ...interface{}) {
-	s.log(slog.LevelError, format, args...)
+	s.output(slog.LevelError, format, args...)
 }
 
+// With returns a new logger with the given key-value pairs
 func (s *SLogger) With(kvs ...any) *SLogger {
 	logr := s.logr.With(kvs...)
 	s.logr = logr
 
 	return s
+}
+
+// caller returns the caller of the file and function that called it
+func caller() string {
+	pc, file, line, _ := runtime.Caller(4)
+	funcName := runtime.FuncForPC(pc).Name()
+
+	// file = filepath.Base(file) // filename only
+
+	parts := strings.Split(funcName, ".")
+	funcName = parts[len(parts)-1]
+
+	return fmt.Sprintf("%s:%d#%s", file, line, funcName)
 }
