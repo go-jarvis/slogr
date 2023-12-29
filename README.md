@@ -2,8 +2,8 @@
 
 ## Usage
 
-```
-https://github.com/go-jarvis/slogr
+```bash
+go get -u https://github.com/go-jarvis/slogr
 ```
 
 **example**
