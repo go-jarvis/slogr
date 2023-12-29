@@ -24,17 +24,19 @@ func TestOriginLogger(t *testing.T) {
 
 // TestSLogger is a test for SLogger
 func TestSLogger(t *testing.T) {
-	log := &SLogger{
-		Level:  "debug",
-		Format: "json", // text
-	}
-	log.Initialize()
+	log := New("debug", "json")
 	log = log.With("foo", "bar")
-
-	Output(log)
+	output(log)
 }
 
-func Output(log *SLogger) {
+func TestLoggerFromContext(t *testing.T) {
+	ctx := context.Background()
+	log := FromContext(ctx)
+
+	output(log)
+}
+
+func output(log Logger) {
 	log = log.With("in", "output")
 	log.Debug("hello world")
 	log.Info("hello world")
@@ -50,8 +52,8 @@ func Output(log *SLogger) {
 func TestSLogger2(t *testing.T) {
 
 	log := FromContext(context.TODO())
-	log.Initialize()
+	// log.Initialize()
 	log = log.With("foo", "bar")
 
-	Output(log)
+	output(log)
 }

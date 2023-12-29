@@ -17,5 +17,7 @@
 
 ## Example
 
-go to [slog_test.go](./slogr_test.go)
+1. go to [slog_test.go](./slogr_test.go)
+2. go to [example/main.go](./__example__/main.go)
+
 
