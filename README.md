@@ -3,7 +3,7 @@
 ## Usage
 
 ```bash
-go get -u https://github.com/go-jarvis/slogr
+go get -u github.com/go-jarvis/slogr
 ```
 
 **example**
