@@ -6,8 +6,17 @@ import (
 	"log/slog"
 	"runtime"
 	"strings"
+
+	"github.com/go-jarvis/slogr/handler"
 )
 
+// SLogger is a wrapper around slog.Logger
+// It provides a default logger with json format and info level
+// It also provides `FromContext` function to create a new logger with the given key-value pairs
+// It also provides `WithContext` function to get the logger from the context
+//
+// Level: debug,info,warn,error
+// Format: json,text
 type SLogger struct {
 	Level  string `env:""`
 	Format string `env:""`
@@ -61,7 +70,7 @@ func (s *SLogger) SetDefaults() {
 func (s *SLogger) Initialize() {
 	s.SetDefaults()
 
-	h := Handler(s.Format, s.Level)
+	h := handler.New(s.Format, s.Level)
 	s.logr = slog.New(h)
 }
 

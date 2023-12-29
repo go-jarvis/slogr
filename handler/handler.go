@@ -1,16 +1,18 @@
-package slogr
+package handler
 
 import (
 	"log/slog"
 	"os"
 	"strings"
+
+	"github.com/go-jarvis/slogr/leveler"
 )
 
-// Handler returns a new slog.Handler based on the given format and level
-func Handler(format string, level string) slog.Handler {
+// New returns a new slog.New based on the given format and level
+func New(format string, level string) slog.Handler {
 
 	opt := &slog.HandlerOptions{
-		Level: Leveler(strings.ToLower(level)).Leveler(),
+		Level: leveler.Parse(level),
 	}
 
 	switch strings.ToLower(format) {
@@ -22,5 +24,4 @@ func Handler(format string, level string) slog.Handler {
 	}
 
 	return slog.NewJSONHandler(os.Stdout, opt)
-
 }
