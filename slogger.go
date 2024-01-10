@@ -93,9 +93,19 @@ func (s *SLogger) With(kvs ...any) Logger {
 // With returns a new logger with the given key-value pairs
 func (s *SLogger) with(kvs ...any) *SLogger {
 	logr := s.logr.With(kvs...)
-	s.logr = logr
 
-	return s
+	cc := s.copy()
+	cc.logr = logr
+
+	return cc
+}
+
+func (s *SLogger) copy() *SLogger {
+	return &SLogger{
+		Level:  s.Level,
+		Format: s.Format,
+		logr:   s.logr,
+	}
 }
 
 // caller returns the caller of the file and function that called it
