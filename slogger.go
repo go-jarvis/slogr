@@ -29,7 +29,7 @@ var _ Logger = &SLogger{}
 
 // Default returns a new `SLogger` with the default `info` level and `json` format
 func Default() Logger {
-	return New("info", "json")
+	return New("debug", "json")
 }
 
 // New returns a new `SLogger` with the given level and format
@@ -46,7 +46,7 @@ func New(level string, format string) Logger {
 // SetDefaults sets the default values for the logger
 func (s *SLogger) SetDefaults() {
 	if s.Level == "" {
-		s.Level = "info"
+		s.Level = "debug"
 	}
 
 	if s.Format == "" {
