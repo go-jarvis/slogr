@@ -89,6 +89,12 @@ func (s *SLogger) Error(format string, args ...interface{}) {
 func (s *SLogger) With(kvs ...any) Logger {
 	return s.with(kvs...)
 }
+func (s *SLogger) WithContext(ctx context.Context, kvs ...any) (Logger, context.Context) {
+	// return s.with(kvs...)
+	l := s.with(kvs...)
+	ctx = WithContext(ctx, l)
+	return l, ctx
+}
 
 // With returns a new logger with the given key-value pairs
 func (s *SLogger) with(kvs ...any) *SLogger {
