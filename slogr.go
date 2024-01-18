@@ -7,7 +7,7 @@ import "context"
 // It provides `Debug`, `Info`, `Warn`, `Error` functions to log messages
 type Logger interface {
 	With(kv ...any) Logger
-	WithContext(ctx context.Context, ky ...any) (Logger, context.Context)
+	WithContext(ctx context.Context, ky ...any) (context.Context, Logger)
 	Debug(format string, args ...interface{})
 	Info(format string, args ...interface{})
 	Warn(format string, args ...interface{})

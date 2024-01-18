@@ -9,10 +9,9 @@ type Discard struct{}
 func (d *Discard) With(kvs ...any) Logger {
 	return d
 }
-func (d *Discard) WithContext(ctx context.Context, kvs ...any) (Logger, context.Context) {
+func (d *Discard) WithContext(ctx context.Context, kvs ...any) (context.Context, Logger) {
 
-	// return ctx, d
-	return d, ctx
+	return ctx, d
 }
 
 func (d *Discard) Debug(format string, args ...interface{}) {}
